@@ -11,8 +11,8 @@ namespace UP_02
         public static int MatDef(int productId, int materialType, int quantity, double par1, double par2)
         {
             double result;
-            var TypeProduct = Entities1.GetContext().ProductsType.Where(x => x.ProductsTypeID == productId);
-            var typeMaterial = Entities1.GetContext().MaterialType.Where(x => x.materialType1 == materialType);
+            var TypeProduct = Entities.GetContext().ProductsType.Where(x => x.ProductsTypeID == productId);
+            var typeMaterial = Entities.GetContext().MaterialType.Where(x => x.materialType1 == materialType);
             if (TypeProduct.Count() < 1 | typeMaterial.Count() < 1 | quantity < 1 | par1 <= 0 | par2 <= 0)
                 return -1;
             else

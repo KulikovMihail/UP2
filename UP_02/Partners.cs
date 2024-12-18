@@ -11,7 +11,7 @@ namespace UP_02
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Partners
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,7 +19,7 @@ namespace UP_02
         {
             this.PartnerProducts = new HashSet<PartnerProducts>();
         }
-    
+
         public int PartnerID { get; set; }
         public Nullable<int> PartnerType { get; set; }
         public string CompanyName { get; set; }
@@ -28,9 +28,9 @@ namespace UP_02
         public string DirectorName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public double Discount { get; set; }
         public Nullable<decimal> Rating { get; set; }
-    
+        public double Discount { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PartnerProducts> PartnerProducts { get; set; }
         public virtual PartnersType PartnersType { get; set; }

@@ -10,21 +10,10 @@
 namespace UP_02
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ProductsType
+    public partial class sp_helpdiagramdefinition_Result
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProductsType()
-        {
-            this.Products = new HashSet<Products>();
-        }
-    
-        public int ProductsTypeID { get; set; }
-        public string Name { get; set; }
-        public Nullable<double> Ratio { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Products> Products { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

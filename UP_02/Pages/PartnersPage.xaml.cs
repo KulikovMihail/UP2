@@ -31,9 +31,9 @@ namespace UP_02.Pages
         {
             InitializeComponent();
             //partnersListView.ItemsSource = Entities1.GetContext().Partners.ToList();
-            partners = Entities1.GetContext().Partners.ToList();
+            partners = Entities.GetContext().Partners.ToList();
 
-            salesData = Entities1.GetContext().PartnerProducts.ToList();
+            salesData = Entities.GetContext().PartnerProducts.ToList();
 
             if (salesData == null)
             {
@@ -58,6 +58,16 @@ namespace UP_02.Pages
 
 
 
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                Entities.GetContext().ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+                partnersListView.ItemsSource = Entities.GetContext().Partners.ToList();
+
+            }
         }
 
 

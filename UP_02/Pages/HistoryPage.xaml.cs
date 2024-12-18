@@ -23,7 +23,7 @@ namespace UP_02.Pages
         public HistoryPage(Partners p)
         {
             InitializeComponent();
-            HisrodyGrid.ItemsSource=Entities1.GetContext().PartnerProducts.Where(x=>x.PartnerID==p.PartnerID).ToList();
+            HisrodyGrid.ItemsSource=Entities.GetContext().PartnerProducts.Where(x=>x.PartnerID==p.PartnerID).ToList();
             Partner.Text=p.CompanyName;
         }
 

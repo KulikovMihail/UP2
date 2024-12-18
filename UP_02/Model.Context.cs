@@ -12,20 +12,20 @@ namespace UP_02
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
-    public partial class Entities1 : DbContext
-    {
-        private static Entities1 _context;
 
-        public Entities1()
-            : base("name=Entities1")
+    public partial class Entities : DbContext
+    {
+        private static Entities _context;
+
+        public Entities()
+            : base("name=Entities")
         {
         }
-        
-        public static Entities1 GetContext()
+
+        public static Entities GetContext()
         {
             if (_context == null)
-                _context = new Entities1();
+                _context = new Entities();
             return _context;
         }
 
@@ -33,7 +33,7 @@ namespace UP_02
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<MaterialType> MaterialType { get; set; }
         public virtual DbSet<PartnerProducts> PartnerProducts { get; set; }
         public virtual DbSet<Partners> Partners { get; set; }

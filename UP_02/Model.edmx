@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище UP2_KugushevModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="MaterialType">
           <Key>
             <PropertyRef Name="materialType" />
@@ -60,7 +60,17 @@
           </Key>
           <Property Name="ProductsTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="150" />
-          <Property Name="Ratio" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="Ratio" Type="float" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <Association Name="FK__PartnerPr__Partn__6754599E">
           <End Role="Partners" Type="Self.Partners" Multiplicity="1" />
@@ -74,7 +84,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PartnerPr__Produ__4222D4EF">
+        <Association Name="FK__PartnerPr__Produ__440B1D61">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="PartnerProducts" Type="Self.PartnerProducts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -110,18 +120,50 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище UP2_KugushevModelContainer">
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Хранилище ModelContainer">
           <EntitySet Name="MaterialType" EntityType="Self.MaterialType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PartnerProducts" EntityType="Self.PartnerProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Partners" EntityType="Self.Partners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PartnersType" EntityType="Self.PartnersType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductsType" EntityType="Self.ProductsType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__PartnerPr__Partn__6754599E" Association="Self.FK__PartnerPr__Partn__6754599E">
             <End Role="Partners" EntitySet="Partners" />
             <End Role="PartnerProducts" EntitySet="PartnerProducts" />
           </AssociationSet>
-          <AssociationSet Name="FK__PartnerPr__Produ__4222D4EF" Association="Self.FK__PartnerPr__Produ__4222D4EF">
+          <AssociationSet Name="FK__PartnerPr__Produ__440B1D61" Association="Self.FK__PartnerPr__Produ__440B1D61">
             <End Role="Products" EntitySet="Products" />
             <End Role="PartnerProducts" EntitySet="PartnerProducts" />
           </AssociationSet>
@@ -138,7 +180,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="UP2_KugushevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="MaterialType">
           <Key>
             <PropertyRef Name="materialType1" />
@@ -156,7 +198,7 @@
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Partners" Relationship="Self.FK__PartnerPr__Partn__6754599E" FromRole="PartnerProducts" ToRole="Partners" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__PartnerPr__Produ__4222D4EF" FromRole="PartnerProducts" ToRole="Products" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__PartnerPr__Produ__440B1D61" FromRole="PartnerProducts" ToRole="Products" />
         </EntityType>
         <EntityType Name="Partners">
           <Key>
@@ -192,7 +234,7 @@
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="MinPrice" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="PartnerProducts" Relationship="Self.FK__PartnerPr__Produ__4222D4EF" FromRole="Products" ToRole="PartnerProducts" />
+          <NavigationProperty Name="PartnerProducts" Relationship="Self.FK__PartnerPr__Produ__440B1D61" FromRole="Products" ToRole="PartnerProducts" />
           <NavigationProperty Name="ProductsType" Relationship="Self.FK__Products__Produc__440B1D61" FromRole="Products" ToRole="ProductsType" />
         </EntityType>
         <EntityType Name="ProductsType">
@@ -201,8 +243,18 @@
           </Key>
           <Property Name="ProductsTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Ratio" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="Ratio" Type="Double" />
           <NavigationProperty Name="Products" Relationship="Self.FK__Products__Produc__440B1D61" FromRole="ProductsType" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK__PartnerPr__Partn__6754599E">
           <End Role="Partners" Type="Self.Partners" Multiplicity="1" />
@@ -216,7 +268,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PartnerPr__Produ__4222D4EF">
+        <Association Name="FK__PartnerPr__Produ__440B1D61">
           <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="PartnerProducts" Type="Self.PartnerProducts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -252,18 +304,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MaterialType" EntityType="Self.MaterialType" />
           <EntitySet Name="PartnerProducts" EntityType="Self.PartnerProducts" />
           <EntitySet Name="Partners" EntityType="Self.Partners" />
           <EntitySet Name="PartnersType" EntityType="Self.PartnersType" />
           <EntitySet Name="Products" EntityType="Self.Products" />
           <EntitySet Name="ProductsType" EntityType="Self.ProductsType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <AssociationSet Name="FK__PartnerPr__Partn__6754599E" Association="Self.FK__PartnerPr__Partn__6754599E">
             <End Role="Partners" EntitySet="Partners" />
             <End Role="PartnerProducts" EntitySet="PartnerProducts" />
           </AssociationSet>
-          <AssociationSet Name="FK__PartnerPr__Produ__4222D4EF" Association="Self.FK__PartnerPr__Produ__4222D4EF">
+          <AssociationSet Name="FK__PartnerPr__Produ__440B1D61" Association="Self.FK__PartnerPr__Produ__440B1D61">
             <End Role="Products" EntitySet="Products" />
             <End Role="PartnerProducts" EntitySet="PartnerProducts" />
           </AssociationSet>
@@ -275,15 +328,56 @@
             <End Role="ProductsType" EntitySet="ProductsType" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище UP2_KugushevModelContainer" CdmEntityContainer="Entities1">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="MaterialType">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.MaterialType">
+            <EntityTypeMapping TypeName="Model.MaterialType">
               <MappingFragment StoreEntitySet="MaterialType">
                 <ScalarProperty Name="materialType1" ColumnName="materialType" />
                 <ScalarProperty Name="DefectPercent" ColumnName="DefectPercent" />
@@ -291,7 +385,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PartnerProducts">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.PartnerProducts">
+            <EntityTypeMapping TypeName="Model.PartnerProducts">
               <MappingFragment StoreEntitySet="PartnerProducts">
                 <ScalarProperty Name="PartnerID" ColumnName="PartnerID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -301,7 +395,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Partners">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.Partners">
+            <EntityTypeMapping TypeName="Model.Partners">
               <MappingFragment StoreEntitySet="Partners">
                 <ScalarProperty Name="PartnerID" ColumnName="PartnerID" />
                 <ScalarProperty Name="PartnerType" ColumnName="PartnerType" />
@@ -316,7 +410,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PartnersType">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.PartnersType">
+            <EntityTypeMapping TypeName="Model.PartnersType">
               <MappingFragment StoreEntitySet="PartnersType">
                 <ScalarProperty Name="PartnersTypeID" ColumnName="PartnersTypeID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -324,7 +418,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.Products">
+            <EntityTypeMapping TypeName="Model.Products">
               <MappingFragment StoreEntitySet="Products">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Article" ColumnName="Article" />
@@ -336,7 +430,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductsType">
-            <EntityTypeMapping TypeName="UP2_KugushevModel.ProductsType">
+            <EntityTypeMapping TypeName="Model.ProductsType">
               <MappingFragment StoreEntitySet="ProductsType">
                 <ScalarProperty Name="ProductsTypeID" ColumnName="ProductsTypeID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -344,6 +438,41 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище Model.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище Model.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище Model.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище Model.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище Model.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище Model.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище Model.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
